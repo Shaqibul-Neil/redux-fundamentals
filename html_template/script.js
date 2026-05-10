@@ -3,6 +3,15 @@ const counterElement = document.querySelector("#counter");
 const incrementButton = document.querySelector("#increment");
 const decrementButton = document.querySelector("#decrement");
 
+//action identifiers
+const INCREMENT = "increment";
+const DECREMENT = "decrement";
+
+//action creator
+const actionCreator = (type, payload) => {
+  return { type, payload };
+};
+
 //initial state
 const initialState = {
   value: 0,
@@ -10,10 +19,10 @@ const initialState = {
 
 //create reducer function
 const counterReducer = (state = initialState, action) => {
-  if (action.type === "increment") {
-    return { ...state, value: state.value + 1 };
-  } else if (action.type === "decrement") {
-    return { ...state, value: state.value - 1 };
+  if (action.type === INCREMENT) {
+    return { ...state, value: state.value + action.payload };
+  } else if (action.type === DECREMENT) {
+    return { ...state, value: state.value - action.payload };
   } else {
     return state;
   }
@@ -37,9 +46,9 @@ store.subscribe(render);
 //button click listener
 incrementButton.addEventListener("click", () => {
   //call dispatch
-  store.dispatch({ type: "increment" });
+  store.dispatch(actionCreator(INCREMENT, 5));
 });
 
 decrementButton.addEventListener("click", () => {
-  store.dispatch({ type: "decrement" });
+  store.dispatch(actionCreator(DECREMENT, 2));
 });
