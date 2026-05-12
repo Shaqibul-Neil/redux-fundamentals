@@ -4,6 +4,7 @@ const addBtn = document.querySelector(".lws-addMatch");
 const resetBtn = document.querySelector(".lws-reset");
 
 //action identifiers
+// Redux এ action কে identify করার জন্য string constant use করা হয়
 const INCREMENT = "increment";
 const DECREMENT = "decrement";
 const ADD_MATCH = "add_match";
@@ -14,6 +15,7 @@ const actionCreator = (type, payload) => {
   return { type, payload };
 };
 
+// Redux store এর initial data
 const initialState = {
   matches: [{ id: 1, value: 0 }],
 };
@@ -61,12 +63,14 @@ const counterReducer = (state = initialState, action) => {
 
 //create store
 /* global Redux */
+// Redux store create
+// store পুরো application state hold করে
 const store = Redux.createStore(counterReducer);
 
 //render ui
 const render = () => {
   const currentState = store.getState();
-
+  // প্রতিটা match এর জন্য HTML বানানো
   matchContainer.innerHTML = currentState.matches
     .map(
       (match, idx) =>
@@ -97,9 +101,21 @@ const render = () => {
 };
 
 //initial render
+// page load এ প্রথম UI দেখাবে
 render();
 //subscribe
+// state change হলেই render run হবে
 store.subscribe(render);
+/*
+Redux flow:
+
+dispatch()
+→ reducer
+→ new state
+→ subscribe fires
+→ render()
+→ UI update
+*/
 
 //add match
 addBtn.addEventListener("click", () => {
@@ -111,13 +127,21 @@ resetBtn.addEventListener("click", () => {
   store.dispatch(actionCreator(RESET));
 });
 
-//input listener
+// ==============================
+// INCREMENT + DECREMENT
+// ==============================
+
+// event delegation
+// future dynamically added input ও কাজ করবে
 matchContainer.addEventListener("keydown", (e) => {
   if (e.key !== "Enter") return;
   e.preventDefault();
 
+  // nearest parent .match
   const matchEl = e.target.closest(".match");
   if (!matchEl) return;
+
+  // data-id read
   const id = Number(matchEl.dataset.id);
 
   //increment
