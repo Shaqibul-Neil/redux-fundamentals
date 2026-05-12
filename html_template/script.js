@@ -16,11 +16,13 @@ const actionCreator = (type, payload) => {
 const initialState = {
   value: 0,
 };
-
+console.log("initialState:", initialState.value);
 //create reducer function
 const counterReducer = (state = initialState, action) => {
   if (action.type === INCREMENT) {
-    return { ...state, value: state.value + action.payload };
+    const newStore = { ...state, value: state.value + action.payload };
+    console.log("newStore", newStore);
+    return newStore;
   } else if (action.type === DECREMENT) {
     return { ...state, value: state.value - action.payload };
   } else {
@@ -31,6 +33,7 @@ const counterReducer = (state = initialState, action) => {
 //create store
 /* global Redux */
 const store = Redux.createStore(counterReducer);
+console.log("store", store);
 
 //dom update
 const render = () => {
